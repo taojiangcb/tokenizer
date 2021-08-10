@@ -1,4 +1,4 @@
-import TokenType from './tokenTye';
+import TokenType from './TokenType';
 export default class Token {
   private type: TokenType;
   private value: string;

@@ -12,7 +12,10 @@
   "author": "taojiang",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^27.0.1",
     "jest": "^27.0.6",
+    "power-assert": "^1.6.1",
+    "ts-jest": "^27.0.4",
     "ts-node": "^10.2.0",
     "typescript": "^4.3.5"
   },

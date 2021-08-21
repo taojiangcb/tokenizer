@@ -7,11 +7,19 @@ const CACHE_SIZE = 10;
 
 type EndToken<T> = T | null;
 
+/**
+ * 字符流处理
+ *   peek = it -> queueCache -> stackPutBacks
+ *   next = 销毁上一次的 peek 存储的 starckPutBacks 的值。
+ */
 class PeekIterator<T> {
   private it: any;
 
-  //当前回退记录
-  private stackPutBacks: LinkedList<T>;
+  /**
+   * 在 peek 中取出 queueCache 最后的元素存放到 stackPutBacks
+   * stackPutBack 为了实现 peek 方法准的，就是为了存储一次外部调用 next() 的结果
+   */
+  public stackPutBacks: LinkedList<T>;
 
   //即将消费掉的缓存，在 peek 中消费掉
   private queueCache: LinkedList<T>;
@@ -19,7 +27,7 @@ class PeekIterator<T> {
   //流的结束标记 tokeng
   private endToken: EndToken<T>
 
-  constructor(it: any, endToken: EndToken<T>) {
+  constructor(it: any, endToken: EndToken<T> = null) {
     this.it = it;
     this.stackPutBacks = new LinkedList();
     this.queueCache = new LinkedList();
@@ -27,7 +35,9 @@ class PeekIterator<T> {
   }
 
   /**
-   * 消费掉一个
+   * 查看下一个 next() 返回的结果，然后放入到 putback 缓存中
+   *  在下一次 call next 的时候会 remoteList() 销毁上一次 peek 中存入的缓存
+   * 大白话就是看一下 下一个 next 是啥
    * @returns 
    */
   peek():T | null {
@@ -50,7 +60,7 @@ class PeekIterator<T> {
   }
 
   /** 是否有下一个 */
-  hashNext() {
+  hasNext() {
     return !!this.endToken || !!this.peek();
   }
 
